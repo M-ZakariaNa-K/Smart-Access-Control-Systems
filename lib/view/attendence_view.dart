@@ -23,20 +23,22 @@ class AttendenceView extends StatelessWidget {
                 'Attendence',
                 style: TextStyle(
                     color: Color(0xFF3671AA),
-                    fontSize: 33,
+                    // fontSize: 33,
                     fontFamily: 'NeoLatina',
                     fontWeight: FontWeight.bold
                 )
             ),
-            Icon(
+           Row(
+            children: [
+               Icon(
               Icons.person,
-              size: 30,
+              // size: 30,
               color: Color(0XFF4382bb),
             ),
       PopupMenuButton(
         icon: Icon(
           Icons.exit_to_app,
-          size: 30,
+          // size: 30,
           color: Color(0XFF4382bb),
         ),
         onSelected: (value) {
@@ -174,30 +176,29 @@ class AttendenceView extends StatelessWidget {
           ),
         ],
       ),
+            ],
+           )
       ],
         ),
       ),
       body:Container(
+        padding: EdgeInsets.all(20),
         decoration: BoxDecoration(
           image: DecorationImage(image: AssetImage('assets/images/Background.jpg'),
           fit: BoxFit.cover,
-          colorFilter: ColorFilter.mode(Colors.white.withOpacity(0.5), BlendMode.srcOver)
+          colorFilter: ColorFilter.mode(Colors.white.withOpacity(0.7), BlendMode.srcOver)
         ),
         ),
         child: SafeArea(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Padding(
-        padding: EdgeInsets.all(8),
-        child:
-         ClipRRect(
-           borderRadius: BorderRadius.circular(30),
-            child: Image(
-            image: AssetImage('assets/images/att.jpg'),
-          ),
-        ),
-      ),
+            ClipRRect(
+              borderRadius: BorderRadius.circular(30),
+               child: Image(
+               image: AssetImage('assets/images/att.jpg'),
+             ),
+                    ),
             Text(
                 'Attendence Summary',
               style: TextStyle(
