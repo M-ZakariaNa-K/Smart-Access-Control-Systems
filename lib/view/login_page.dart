@@ -47,13 +47,13 @@ class _LogInPageState extends State<LogInPage> {
     passwordFocus.dispose();
     super.dispose();
   }
-
+final _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
  
       body: Container(
-        padding: EdgeInsets.symmetric(horizontal: 20,vertical: 40),
+        padding: EdgeInsets.symmetric(horizontal: 20,vertical: 80),
         // Container
         decoration: BoxDecoration(
           image: DecorationImage(
@@ -66,10 +66,11 @@ class _LogInPageState extends State<LogInPage> {
           ),
           // DecorationImage
         ),
-        // backgroundColor: const Color.fromARGB(251, 255, 255, 255),
+       child: Form(
+        key:_formKey,// backgroundColor: const Color.fromARGB(251, 255, 255, 255),
         child: Column(
           children: [
-            Image.asset(imagePath, height: 300, width: 300,fit: BoxFit.cover,),
+            SizedBox(child: Image.asset(imagePath, height: 300, width: 300,)),
             Column(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
@@ -94,23 +95,60 @@ class _LogInPageState extends State<LogInPage> {
               padding: const EdgeInsets.all(8.0),
               child: CustomTextField(
                 textInputType: TextInputType.emailAddress,
-                hintText: 'E mail', focusNode: emailFocus),
-            ),
+                hintText: 'E mail', focusNode: emailFocus,
+                validator: (Value){
+                  if(Value==null|| Value.isEmpty){
+                    return'Enter Your Email';
+                  }
+                  bool emailValid = RegExp(r'^[\w\.-]+@[\w\.-]+\.\w+$').hasMatch(Value);
+                  if(!emailValid){
+                      return 'invalid Email';
+                  }
+                 return null; 
+                },
+                ),
+                ),
+            
             SizedBox(height: 20),
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: CustomTextField(
                 hintText: 'Password',
                 focusNode: passwordFocus,
+                  validator: (value) {
+      if (value == null || value.isEmpty) {
+        return 'Enter PassWord';
+      }
+      if (value.length < 8) {
+        return 'Short PassWord';
+      }
+      bool hasLetter = value.contains(RegExp(r'[A-Za-z]'));
+      bool hasDigit = value.contains(RegExp(r'[0-9]'));
+      bool hasSymbol = value.contains(RegExp(r'[!@#\$&*~%^]'));
+      if (!hasLetter || !hasDigit || !hasSymbol) {
+        return 'Password should comtain numbers , letters &sympols';}
+      return null;
+    }
               ),
             ),
             SizedBox(height: 20),
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: GestureDetector(
-                onTap: () {
-                  Get.offAll(AttendenceView());
-                },
+               onTap: () {
+  if (_formKey.currentState!.validate()) {
+    Get.offAll(AttendenceView());
+  } else {
+    Get.snackbar(
+      'Error',
+      'Please fill all fields correctly',
+      backgroundColor: Colors.red.shade400,
+      colorText: Colors.white,
+      snackPosition: SnackPosition.BOTTOM,
+    );
+  }
+},
+
                 child: Container(
                   width: 120,
                   decoration: BoxDecoration(
@@ -134,6 +172,7 @@ class _LogInPageState extends State<LogInPage> {
           ],
         ),
       ),
+    ),
     );
   }
 }
