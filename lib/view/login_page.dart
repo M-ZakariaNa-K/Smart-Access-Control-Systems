@@ -137,7 +137,7 @@ final _formKey = GlobalKey<FormState>();
               child: GestureDetector(
                onTap: () {
   if (_formKey.currentState!.validate()) {
-    Get.offAll(AttendenceView());
+    Get.offAll(AttendanceView());
   } else {
     Get.snackbar(
       'Error',
