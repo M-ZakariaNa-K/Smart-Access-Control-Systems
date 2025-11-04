@@ -1,3 +1,4 @@
+import 'package:example/controller/login_controller.dart';
 import 'package:example/view/attendance_view.dart';
 import 'package:example/view/home_view.dart';
 import 'package:example/view/widgets/custom_text_field.dart';
@@ -12,6 +13,9 @@ class LogInPage extends StatefulWidget {
 }
 
 class _LogInPageState extends State<LogInPage> {
+  final emailController = TextEditingController();
+final passwordController = TextEditingController();
+final loginController = LoginController();
   FocusNode emailFocus = FocusNode();
   FocusNode passwordFocus = FocusNode();
   String imagePath = 'assets/images/smily_logo.png';
@@ -94,6 +98,7 @@ final _formKey = GlobalKey<FormState>();
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: CustomTextField(
+                controller: emailController,
                 textInputType: TextInputType.emailAddress,
                 hintText: 'E mail', focusNode: emailFocus,
                 validator: (Value){
@@ -113,31 +118,46 @@ final _formKey = GlobalKey<FormState>();
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: CustomTextField(
+                controller: passwordController,
                 hintText: 'Password',
                 focusNode: passwordFocus,
                   validator: (value) {
       if (value == null || value.isEmpty) {
         return 'Enter PassWord';
       }
-      if (value.length < 8) {
-        return 'Short PassWord';
-      }
-      bool hasLetter = value.contains(RegExp(r'[A-Za-z]'));
-      bool hasDigit = value.contains(RegExp(r'[0-9]'));
-      bool hasSymbol = value.contains(RegExp(r'[!@#\$&*~%^]'));
-      if (!hasLetter || !hasDigit || !hasSymbol) {
-        return 'Password should comtain numbers , letters &sympols';}
-      return null;
-    }
+    //   if (value.length < 8) {
+    //     return 'Short PassWord';
+    //   }
+    //   bool hasLetter = value.contains(RegExp(r'[A-Za-z]'));
+    //   bool hasDigit = value.contains(RegExp(r'[0-9]'));
+    //   bool hasSymbol = value.contains(RegExp(r'[!@#\$&*~%^]'));
+    //   if (!hasLetter || !hasDigit || !hasSymbol) {
+    //     return 'Password should comtain numbers , letters &sympols';}
+    //   
+     }
               ),
             ),
             SizedBox(height: 20),
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: GestureDetector(
-               onTap: () {
-  if (_formKey.currentState!.validate()) {
-    Get.offAll(AttendenceView());
+               onTap: () async {
+      if (_formKey.currentState!.validate()) {
+    final authResponse = await loginController.login(
+      emailController.text.trim(),
+      passwordController.text.trim(),
+    );
+       if (authResponse != null) {
+      Get.offAll(AttendanceView());
+      Get.snackbar(
+        'Success',
+        'Welcome ${authResponse.firstName}',
+        backgroundColor: Colors.green.shade400,
+        colorText: Colors.white,
+        snackPosition: SnackPosition.BOTTOM,
+      );
+    }
+
   } else {
     Get.snackbar(
       'Error',
