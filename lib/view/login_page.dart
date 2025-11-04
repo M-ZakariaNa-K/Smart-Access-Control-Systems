@@ -1,4 +1,4 @@
-import 'package:example/view/attendence_view.dart';
+import 'package:example/view/attendance_view.dart';
 import 'package:example/view/home_view.dart';
 import 'package:example/view/widgets/custom_text_field.dart';
 import 'package:flutter/material.dart';
