@@ -5,6 +5,7 @@ import 'package:example/view/widgets/custom_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/utils.dart';
+
 class LogInPage extends StatefulWidget {
   LogInPage({super.key});
 
@@ -14,11 +15,15 @@ class LogInPage extends StatefulWidget {
 
 class _LogInPageState extends State<LogInPage> {
   final emailController = TextEditingController();
-final passwordController = TextEditingController();
-final loginController = LoginController();
+  final passwordController = TextEditingController();
+  final loginController = LoginController();
+
   FocusNode emailFocus = FocusNode();
   FocusNode passwordFocus = FocusNode();
   String imagePath = 'assets/images/smily_logo.png';
+
+  final _formKey = GlobalKey<FormState>();
+
   @override
   void initState() {
     super.initState();
@@ -51,148 +56,135 @@ final loginController = LoginController();
     passwordFocus.dispose();
     super.dispose();
   }
-final _formKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
- 
       body: Container(
-        padding: EdgeInsets.symmetric(horizontal: 20,vertical: 80),
-        // Container
+        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 80),
         decoration: BoxDecoration(
           image: DecorationImage(
             image: AssetImage("assets/images/pattern.png"),
             fit: BoxFit.cover,
             colorFilter: ColorFilter.mode(
-              Colors.white.withOpacity(0.5), // تحكم بالـ opacity
-              BlendMode.srcOver, // كيف ينمزج اللون مع الصورة
+              Colors.white.withOpacity(0.5),
+              BlendMode.srcOver,
             ),
           ),
-          // DecorationImage
         ),
-       child: Form(
-        key:_formKey,// backgroundColor: const Color.fromARGB(251, 255, 255, 255),
-        child: Column(
-          children: [
-            SizedBox(child: Image.asset(imagePath, height: 300, width: 300,)),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(15.0),
-                  child: Container(
-                    width: double.infinity,
-                    child: Text(
-                      'LOGIN',
-                      style: TextStyle(
-                        fontFamily: 'NeoLatina',
-                        fontSize: 24,
-                        fontWeight: FontWeight.w900,
-                        color: Color(0xFF3671AA), //
-                      ),
-                    ),
-                  ),
+        child: Form(
+          key: _formKey,
+          child: Column(
+            children: [
+              SizedBox(
+                child: Image.asset(
+                  imagePath,
+                  height: 300,
+                  width: 300,
                 ),
-              ],
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: CustomTextField(
-                controller: emailController,
-                textInputType: TextInputType.emailAddress,
-                hintText: 'E mail', focusNode: emailFocus,
-                validator: (Value){
-                  if(Value==null|| Value.isEmpty){
-                    return'Enter Your Email';
-                  }
-                  bool emailValid = RegExp(r'^[\w\.-]+@[\w\.-]+\.\w+$').hasMatch(Value);
-                  if(!emailValid){
-                      return 'invalid Email';
-                  }
-                 return null; 
-                },
-                ),
-                ),
-            
-            SizedBox(height: 20),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: CustomTextField(
-                controller: passwordController,
-                hintText: 'Password',
-                focusNode: passwordFocus,
-                  validator: (value) {
-      if (value == null || value.isEmpty) {
-        return 'Enter PassWord';
-      }
-    //   if (value.length < 8) {
-    //     return 'Short PassWord';
-    //   }
-    //   bool hasLetter = value.contains(RegExp(r'[A-Za-z]'));
-    //   bool hasDigit = value.contains(RegExp(r'[0-9]'));
-    //   bool hasSymbol = value.contains(RegExp(r'[!@#\$&*~%^]'));
-    //   if (!hasLetter || !hasDigit || !hasSymbol) {
-    //     return 'Password should comtain numbers , letters &sympols';}
-    //   
-     }
               ),
-            ),
-            SizedBox(height: 20),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: GestureDetector(
-               onTap: () async {
-      if (_formKey.currentState!.validate()) {
-    final authResponse = await loginController.login(
-      emailController.text.trim(),
-      passwordController.text.trim(),
-    );
-       if (authResponse != null) {
-      Get.offAll(AttendanceView());
-      Get.snackbar(
-        'Success',
-        'Welcome ${authResponse.firstName}',
-        backgroundColor: Colors.green.shade400,
-        colorText: Colors.white,
-        snackPosition: SnackPosition.BOTTOM,
-      );
-    }
-
-  } else {
-    Get.snackbar(
-      'Error',
-      'Please fill all fields correctly',
-      backgroundColor: Colors.red.shade400,
-      colorText: Colors.white,
-      snackPosition: SnackPosition.BOTTOM,
-    );
-  }
-},
-
+              Padding(
+                padding: const EdgeInsets.all(15.0),
                 child: Container(
-                  width: 120,
-                  decoration: BoxDecoration(
-                    color: Color(0xFF3671AA),
-                    borderRadius: BorderRadius.circular(20),
+                  width: double.infinity,
+                  child: Text(
+                    'LOGIN',
+                    style: TextStyle(
+                      fontFamily: 'NeoLatina',
+                      fontSize: 24,
+                      fontWeight: FontWeight.w900,
+                      color: Color(0xFF3671AA),
+                    ),
                   ),
-                  child: Center(
-                    child: Text(
-                      'LOGIN',
-                      style: TextStyle(
-                        fontFamily: 'NeoLatina',
-                        color: Colors.white,
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: CustomTextField(
+                  controller: emailController,
+                  textInputType: TextInputType.emailAddress,
+                  hintText: 'E mail',
+                  focusNode: emailFocus,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Enter Your Email';
+                    }
+                    bool emailValid =
+                        RegExp(r'^[\w\.-]+@[\w\.-]+\.\w+$').hasMatch(value);
+                    if (!emailValid) {
+                      return 'Invalid Email';
+                    }
+                    return null;
+                  },
+                ),
+              ),
+              SizedBox(height: 20),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: CustomTextField(
+                  controller: passwordController,
+                  hintText: 'Password',
+                  focusNode: passwordFocus,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Enter Password';
+                    }
+                  },
+                ),
+              ),
+              SizedBox(height: 20),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: GestureDetector(
+                  onTap: () async {
+                    if (_formKey.currentState!.validate()) {
+                      final authResponse = await loginController.login(
+                        emailController.text.trim(),
+                        passwordController.text.trim(),
+                      );
+                      if (authResponse != null) {
+                        Get.offAll(AttendanceView());
+                        Get.snackbar(
+                          'Success',
+                          'Welcome ${authResponse.firstName}',
+                          backgroundColor: Colors.green.shade400,
+                          colorText: Colors.white,
+                          snackPosition: SnackPosition.BOTTOM,
+                        );
+                      }
+                    } else {
+                      Get.snackbar(
+                        'Error',
+                        'Please fill all fields correctly',
+                        backgroundColor: Colors.red.shade400,
+                        colorText: Colors.white,
+                        snackPosition: SnackPosition.BOTTOM,
+                      );
+                    }
+                  },
+                  child: Container(
+                    width: 120,
+                    height: 60,
+                    decoration: BoxDecoration(
+                      color: Color(0xFF3671AA),
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Center(
+                      child: Text(
+                        'LOGIN',
+                        style: TextStyle(
+                          fontFamily: 'NeoLatina',
+                          color: Colors.white,
+                        ),
                       ),
                     ),
                   ),
-                  height: 60,
-                  // width: double.infinity,
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
-    ),
     );
   }
 }
