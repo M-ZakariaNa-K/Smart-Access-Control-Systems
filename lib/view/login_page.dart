@@ -170,12 +170,19 @@ class _LogInPageState extends State<LogInPage> {
                       borderRadius: BorderRadius.circular(20),
                     ),
                     child: Center(
-                      child: Text(
-                        'LOGIN',
-                        style: TextStyle(
-                          fontFamily: 'NeoLatina',
-                          color: Colors.white,
-                        ),
+                      child: Obx(
+                  () {
+                    if(loginController.isLoading.value){
+                      return CircularProgressIndicator();
+                    }
+                          return Text(
+                            'LOGIN',
+                            style: TextStyle(
+                              fontFamily: 'NeoLatina',
+                              color: Colors.white,
+                            ),
+                          );
+                        }
                       ),
                     ),
                   ),

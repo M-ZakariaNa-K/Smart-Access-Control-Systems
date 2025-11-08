@@ -1,6 +1,7 @@
 import 'package:example/view/attendance_view.dart';
 import 'package:example/view/home_view.dart';
 import 'package:example/view/login_page.dart';
+import 'package:example/view/profile_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -19,7 +20,9 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         fontFamily: 'Poppins',
       ),
-      home: LogInPage(),
+       home: LogInPage(),
+  
+
     );
   }
 }

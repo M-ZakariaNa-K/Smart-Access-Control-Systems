@@ -1,6 +1,8 @@
 import 'package:example/view/login_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:example/view/profile_page.dart';
+
 
 class AttendanceView extends StatelessWidget {
   const AttendanceView({super.key});
@@ -30,10 +32,21 @@ class AttendanceView extends StatelessWidget {
             ),
            Row(
             children: [
-               Icon(
-              Icons.person,
-              color: Color(0XFF4382bb),
-            ),
+             GestureDetector(
+  onTap: () {
+    Get.to(() => ProfilePage(
+      name: "اسم المستخدم",  // بدليها بالقيمة الحقيقية
+      id: "12345",
+      cardCode: "AB-009",
+      gender: "female", // أو male حسب الحالة
+    ));
+  },
+  child: Icon(
+    Icons.person,
+    color: Color(0XFF4382bb),
+  ),
+),
+
       PopupMenuButton(
         color: Colors.white,
         icon: Icon(
