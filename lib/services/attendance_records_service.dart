@@ -4,7 +4,7 @@ import 'package:dio/dio.dart';
 
 
 class AttendanceRecordsService {
-  static String? _token;
+  static String? _token="37|9jTgk0LUwiLNnti8KEvrmpa0RauHG2V9D2M9DKeQf4eed65e";
 
   static final Dio _dio= Dio(BaseOptions(
     baseUrl: 'http://89.116.236.10:8000/api/',
@@ -23,7 +23,7 @@ class AttendanceRecordsService {
       
       print("response received with status:${response.statusCode}");
       print('Response body:${response.data}');
-      if(response.statusCode==200 && response.data['code']==200){
+      if(response.statusCode==200){
          final data =response.data['data'];
          return AttendanceData.fromJson(data);
       } else{

@@ -2,7 +2,7 @@ import 'package:dio/dio.dart';
 
 import '../helper/network_util.dart';
 class LogoutFromAppService {
-  static String? _token;
+  static String? _token="37|9jTgk0LUwiLNnti8KEvrmpa0RauHG2V9D2M9DKeQf4eed65e";
 
   static final Dio _dio=Dio(BaseOptions(
     baseUrl: 'http://89.116.236.10:8000/api/',
@@ -24,7 +24,7 @@ class LogoutFromAppService {
     );
       print('Logout from app response received with status: ${response.statusCode} ');
       print('Logout from app response body: ${response.data}');
-      if(response.statusCode == 200 && response.data['code']==200){
+      if(response.statusCode == 200 ){
         print('Logout successful');
         return true;
       }else{
