@@ -17,6 +17,7 @@ class _LogInPageState extends State<LogInPage> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   final loginController = LoginController();
+  bool _obscurePassword = true;
 
   FocusNode emailFocus = FocusNode();
   FocusNode passwordFocus = FocusNode();
@@ -119,35 +120,60 @@ class _LogInPageState extends State<LogInPage> {
                 ),
               ),
               SizedBox(height: 20),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: CustomTextField(
-                  controller: passwordController,
-                  hintText: 'Password',
-                  focusNode: passwordFocus,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Enter Password';
-                    }
-                  },
-                ),
-              ),
+            Padding(
+  padding: const EdgeInsets.symmetric(horizontal: 8.0),
+  child: Container(
+    margin: const EdgeInsets.only(right: 0), 
+    child: CustomTextField(
+      controller: passwordController,
+      hintText: 'Password',
+      focusNode: passwordFocus,
+      isPassword: true,
+      validator: (value) {
+        if (value == null || value.isEmpty) {
+          return 'Enter Password';
+        }
+        return null;
+      },
+    ),
+  ),
+),
+
               SizedBox(height: 20),
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: GestureDetector(
                   onTap: () async {
                     if (_formKey.currentState!.validate()) {
-                      final authResponse = await loginController.login(
-                        emailController.text.trim(),
-                        passwordController.text.trim(),
-                      );
-                      if (authResponse != null) {
-                        Get.offAll(AttendanceView());
+                      try {
+                        final authResponse = await loginController.login(
+                          emailController.text.trim(),
+                          passwordController.text.trim(),
+                        );
+
+                        if (authResponse != null) {
+                          Get.offAllNamed('/attendance');
+                          Get.snackbar(
+                            'Success',
+                            'Welcome ${authResponse.firstName}',
+                            backgroundColor: Colors.green.shade400,
+                            colorText: Colors.white,
+                            snackPosition: SnackPosition.BOTTOM,
+                          );
+                        } else {
+                          Get.snackbar(
+                            'Login failed',
+                            'Check your email or password',
+                            backgroundColor: Colors.red.shade400,
+                            colorText: Colors.white,
+                            snackPosition: SnackPosition.BOTTOM,
+                          );
+                        }
+                      } catch (e) {
                         Get.snackbar(
-                          'Success',
-                          'Welcome ${authResponse.firstName}',
-                          backgroundColor: Colors.green.shade400,
+                          'Connection error',
+                          'Server not reachable. Try again later.',
+                          backgroundColor: Colors.orange.shade400,
                           colorText: Colors.white,
                           snackPosition: SnackPosition.BOTTOM,
                         );
@@ -170,20 +196,18 @@ class _LogInPageState extends State<LogInPage> {
                       borderRadius: BorderRadius.circular(20),
                     ),
                     child: Center(
-                      child: Obx(
-                  () {
-                    if(loginController.isLoading.value){
-                      return CircularProgressIndicator();
-                    }
-                          return Text(
-                            'LOGIN',
-                            style: TextStyle(
-                              fontFamily: 'NeoLatina',
-                              color: Colors.white,
-                            ),
-                          );
+                      child: Obx(() {
+                        if (loginController.isLoading.value) {
+                          return CircularProgressIndicator();
                         }
-                      ),
+                        return Text(
+                          'LOGIN',
+                          style: TextStyle(
+                            fontFamily: 'NeoLatina',
+                            color: Colors.white,
+                          ),
+                        );
+                      }),
                     ),
                   ),
                 ),
