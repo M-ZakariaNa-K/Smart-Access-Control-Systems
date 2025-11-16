@@ -1,15 +1,27 @@
-import 'package:example/view/attendance_view.dart';
-import 'package:example/view/home_view.dart';
-import 'package:example/view/login_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:example/view/login_page.dart';
+import 'package:example/view/attendance_view.dart';
 
-void main() {
-  runApp(const MyApp());
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  final prefs = await SharedPreferences.getInstance();
+  final token = prefs.getString('token');
+
+  // تحديد الصفحة الأولى حسب وجود التوكن
+  final initialRoute = (token == null || token.isEmpty)
+      ? '/login'
+      : '/attendance';
+
+  runApp(MyApp(initialRoute: initialRoute));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  final String initialRoute;
+
+  const MyApp({super.key, required this.initialRoute});
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +31,11 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         fontFamily: 'Poppins',
       ),
-      home: LogInPage(),
+      initialRoute: initialRoute,
+      getPages: [
+        GetPage(name: '/login', page: () =>  LogInPage()),
+        GetPage(name: '/attendance', page: () => const AttendanceView()),
+      ],
     );
   }
 }

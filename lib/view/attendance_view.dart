@@ -1,6 +1,9 @@
 import 'package:example/view/login_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:example/view/profile_page.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
 
 class AttendanceView extends StatelessWidget {
   const AttendanceView({super.key});
@@ -30,10 +33,17 @@ class AttendanceView extends StatelessWidget {
             ),
            Row(
             children: [
-               Icon(
-              Icons.person,
-              color: Color(0XFF4382bb),
-            ),
+             GestureDetector(
+  onTap: () {
+ Get.to(() => const ProfilePage());
+
+  },
+  child: Icon(
+    Icons.person,
+    color: Color(0XFF4382bb),
+  ),
+),
+
       PopupMenuButton(
         color: Colors.white,
         icon: Icon(
@@ -74,10 +84,14 @@ class AttendanceView extends StatelessWidget {
                         Navigator.of(context).pop();
                       },
                     ),
-                    ElevatedButton(
-                      onPressed: () {
-                        Get.offAll(LogInPage());
-                   }, 
+                  ElevatedButton(
+  onPressed: () async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.remove('token'); // حذف التوكن
+    Get.offAllNamed('/login'); // رجوع لصفحة تسجيل الدخول
+  },
+
+
                    style: ElevatedButton.styleFrom(
                     backgroundColor: Color(0xFF3671AA) ,
                     foregroundColor: Colors.white, 

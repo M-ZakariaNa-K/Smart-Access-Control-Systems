@@ -1,0 +1,27 @@
+finish linking login page with its backend
+
+# Conflicts:
+#	lib/view/login_page.dart
+
+# Please enter the commit message for your changes. Lines starting
+# with '#' will be ignored, and an empty message aborts the commit.
+#
+# interactive rebase in progress; onto 2cee45b
+# Last command done (1 command done):
+#    pick 8ad40ed finish linking login page with its backend
+# No commands remaining.
+# You are currently rebasing branch 'imanBranch' on '2cee45b'.
+#
+# Changes to be committed:
+#	modified:   android/gradle.properties
+#	new file:   lib/controller/login_controller.dart
+#	new file:   lib/model/auth_response.dart
+#	new file:   lib/services/api_service.dart
+#	modified:   lib/view/login_page.dart
+#	modified:   lib/view/widgets/custom_text_field.dart
+#	modified:   macos/Flutter/GeneratedPluginRegistrant.swift
+#	modified:   pubspec.lock
+#	modified:   pubspec.yaml
+finish linking login page with its backend
+
+
