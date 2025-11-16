@@ -1,3 +1,4 @@
 {
-    "dart.flutterSdkPath": "C:\\Users\\ASUS\\Downloads\\flutter_windows_3.35.3-stable\\flutter"
+    "dart.flutterSdkPath": "C:\\Users\\ASUS\\Downloads\\flutter_windows_3.35.3-stable\\flutter",
+    "java.configuration.updateBuildConfiguration": "interactive"
 }

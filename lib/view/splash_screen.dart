@@ -24,7 +24,7 @@ class _SplashScreenState extends State<SplashScreen> {
     final token = prefs.getString('token');
 
     if (token != null && token.isNotEmpty) {
-      Get.offAll(() => const AttendanceView());
+      Get.offAll(() =>  AttendanceView());
     } else {
       Get.offAll(() => LogInPage());
     }

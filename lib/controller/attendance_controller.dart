@@ -9,8 +9,6 @@ import '../services/logout_from_club_service.dart';
 import '../view/login_page.dart';
 // import 'package:pull_to_refresh/pull_to_refresh.dart';
 
-
-
 class AttendanceController extends GetxController {
   var isLoading = false.obs;
   var attendanceData = Rxn<AttendanceData>();
@@ -25,7 +23,6 @@ class AttendanceController extends GetxController {
 
   Future<void> fetchAttendance() async {
     try {
-      
       isLoading.value = true;
       final result = await Future.wait([
         AttendanceRecordsService.fetchAttendanceRecords(),
@@ -37,8 +34,8 @@ class AttendanceController extends GetxController {
       // Get.snackbar(
       //   'Success',
       //   'Data refreshed successfully!',
-        // backgroundColor: Colors.green,
-        // icon: Icon(Icons.check_circle, color: Colors.white),
+      // backgroundColor: Colors.green,
+      // icon: Icon(Icons.check_circle, color: Colors.white),
       // duration: Duration(seconds: 2),
       // );
     } catch (e) {
@@ -59,7 +56,7 @@ class AttendanceController extends GetxController {
   }
 
   Future<void> logoutFromClub() async {
-    final status = await LogoutOutFromClubService.LogoutFromClub();
+    final status = await LogoutOutFromClubService.logoutFromClub();
     switch (status) {
       case LogoutStatus.success:
         print('Successfully logged out from club.');

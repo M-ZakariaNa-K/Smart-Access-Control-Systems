@@ -16,6 +16,7 @@ class _ProfilePageState extends State<ProfilePage> {
     controller.fetchProfile();
 
     return Scaffold(
+      backgroundColor: Colors.white,
       extendBodyBehindAppBar: true,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
@@ -37,15 +38,26 @@ class _ProfilePageState extends State<ProfilePage> {
       ),
       body: Obx(() {
         if (controller.isLoading.value) {
-          return const Center(child: CircularProgressIndicator());
+          return const Center(
+              child: CircularProgressIndicator(
+            color: Color(0xFF3671AA),
+          ));
         }
 
         final profile = controller.profile.value;
         if (profile == null) {
-          return const Center(child: Text("ما في بيانات"));
+          return const Center(
+              child: Text(
+            "No profile data found",
+            style: TextStyle(
+              color: Color(0xFF3671AA),
+              fontSize: 20,
+              fontFamily: 'NeoLatina',
+              fontWeight: FontWeight.bold,
+            ),
+          ));
         }
 
-        
         final imagePath = profile.gender == "female"
             ? "assets/images/girly.png"
             : "assets/images/male.jpg";
@@ -84,7 +96,7 @@ class _ProfilePageState extends State<ProfilePage> {
               image: const AssetImage("assets/images/pattern.png"),
               fit: BoxFit.cover,
               colorFilter: ColorFilter.mode(
-                Colors.white.withOpacity(0.5),
+                Colors.white.withOpacity(0.7),
                 BlendMode.srcOver,
               ),
             ),
@@ -102,9 +114,11 @@ class _ProfilePageState extends State<ProfilePage> {
               const SizedBox(height: 30),
               Padding(
                 padding:
-                    const EdgeInsets.symmetric(horizontal: 40, vertical: 20),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+                child: Wrap(
+                  spacing: 30,
+                  runSpacing: 30,
+                  crossAxisAlignment: WrapCrossAlignment.center,
                   children: [
                     _buildInfoText("Full Name", profile.fullName ?? "-"),
                     const SizedBox(height: 15),
@@ -117,8 +131,8 @@ class _ProfilePageState extends State<ProfilePage> {
                     _buildInfoText(
                         "Specialization",
                         (profile.specialization == null ||
-                                profile.specialization!.isEmpty)
-                            ? "-"
+                                profile.specialization.isEmpty)
+                            ? "_"
                             : profile.specialization),
                   ],
                 ),
@@ -133,12 +147,13 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget _buildInfoText(String label, String value) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
+      // mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
         Text(
           label,
           style: const TextStyle(
             fontFamily: 'NeoLatina',
-            fontSize: 18,
+            fontSize: 20,
             fontWeight: FontWeight.w700,
             color: Color(0xFF3671AA),
           ),
