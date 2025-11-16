@@ -1,13 +1,12 @@
 import 'dart:async';
 import 'dart:developer';
-
 import 'package:dio/dio.dart';
 import 'package:example/alert.dart';
 
 
 class $ {
-  static String? _token;
-  static String _URL = "https://dummyjson.com";
+  static String? _token="";
+  static final String _URL = "http://89.116.236.10:8000/api";
 
   static Future<dynamic> get(String url) async {
     try {
@@ -24,6 +23,7 @@ class $ {
       return responseHandler(response);
     } catch (e) {
       Alert.toast("Error connecting server! try again later.");
+      print(e);
       return null;
     }
   }
@@ -47,6 +47,7 @@ class $ {
     } catch (e) {
       log("Error ${e.toString()}");
       Alert.toast("Error connecting server! try again later.");
+      print(e);
       return null;
     }
   }
@@ -68,6 +69,7 @@ class $ {
     } catch (e) {
 
       Alert.toast("Error connecting server! try again later.");
+      print(e);
       return null;
     }
   }

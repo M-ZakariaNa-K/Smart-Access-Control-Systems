@@ -17,7 +17,6 @@ Future<void> main() async {
 
   runApp(MyApp(initialRoute: initialRoute));
 }
-
 class MyApp extends StatelessWidget {
   final String initialRoute;
 
