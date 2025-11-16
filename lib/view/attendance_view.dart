@@ -3,6 +3,9 @@ import 'package:example/view/login_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_connect/http/src/utils/utils.dart';
+import 'package:example/view/profile_page.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
 
 class AttendanceView extends StatelessWidget {
   AttendanceView({super.key});
