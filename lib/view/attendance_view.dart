@@ -214,207 +214,209 @@ class AttendanceView extends StatelessWidget {
           ],
         ),
       ),
-      body: Container(
-        width: double.infinity,
-        height: double.infinity,
-        padding: EdgeInsets.all(15),
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage('assets/images/Background.jpg'),
-            fit: BoxFit.cover,
-            colorFilter: ColorFilter.mode(
-                Colors.white.withOpacity(0.7), BlendMode.srcOver),
+      body: RefreshIndicator(
+        backgroundColor: Colors.white,
+        color: Color(0xFF3671AA),
+        onRefresh: () async {
+          await controller.fetchAttendance();
+        },
+        child: Container(
+          width: double.infinity,
+          height: double.infinity,
+          padding: EdgeInsets.all(15),
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage('assets/images/Background.jpg'),
+              fit: BoxFit.cover,
+              colorFilter: ColorFilter.mode(
+                  Colors.white.withOpacity(0.7), BlendMode.srcOver),
+            ),
           ),
-        ),
-        child: SafeArea(
-          child: Obx(() {
-            if (controller.isLoading.value) {
-              return Center(child: CircularProgressIndicator());
-            }
-            final data = controller.attendanceData.value;
-            if (data == null) {
-              return Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      'No attendance data',
-                      style: TextStyle(
-                        color: Color(0xFF3671AA),
-                        fontSize: 20,
-                        fontFamily: 'NeoLatina',
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    SizedBox(height: 10),
-                    ElevatedButton(
-                      onPressed: () {
-                        controller.fetchAttendance();
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Color.fromARGB(255, 70, 134, 193),
-                        foregroundColor: Colors.white,
-                      ),
-                      child: Text('Try Again'),
-                    ),
-                  ],
-                ),
-              );
-            }
-
-            return SingleChildScrollView(
-              physics: AlwaysScrollableScrollPhysics(),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(30),
-                    child: Image(
-                      image: AssetImage('assets/images/att.jpg'),
-                    ),
-                  ),
-                  Obx(() {
-                    final monthly = controller.monthlyData.value;
-                    if (monthly != null) {
-                      return Card(
-                        margin: const EdgeInsets.symmetric(vertical: 16.0),
-                        elevation: 0,
-                        color: Colors.transparent,
-                        child: Padding(
-                          padding: const EdgeInsets.all(16.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Attendance Summary',
-                                style: TextStyle(
-                                  color: Color(0xFF3671AA),
-                                  fontSize: 20,
-                                  fontFamily: 'NeoLatina',
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              SizedBox(height: 4),
-                              Text(
-                                monthly.month,
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  color: Colors.grey[600],
-                                ),
-                              ),
-                              SizedBox(height: 16),
-                              ListTile(
-                                contentPadding: EdgeInsets.zero,
-                                leading: Container(
-                                  padding: EdgeInsets.all(8),
-                                  decoration: BoxDecoration(
-                                    color: Colors.blue.withOpacity(0.1),
-                                    borderRadius: BorderRadius.circular(8),
-                                  ),
-                                  child: Icon(
-                                    Icons.schedule,
-                                    color: Color(0xFF3671AA),
-                                    size: 20,
-                                  ),
-                                ),
-                                title: Text(
-                                  'Total Hours',
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.w600,
-                                    color: Color(0xFF3671AA),
-                                  ),
-                                ),
-                                trailing: Text(
-                                  '${monthly.totalHours}',
-                                  style: TextStyle(
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.bold,
-                                    color: Color(0xFF3671AA),
-                                  ),
-                                ),
-                              ),
-                              ListTile(
-                                contentPadding: EdgeInsets.zero,
-                                leading: Container(
-                                  padding: EdgeInsets.all(8),
-                                  decoration: BoxDecoration(
-                                    color: Colors.green.withOpacity(0.1),
-                                    borderRadius: BorderRadius.circular(8),
-                                  ),
-                                  child: Icon(
-                                    Icons.login,
-                                    color: Colors.green,
-                                    size: 20,
-                                  ),
-                                ),
-                                title: Text(
-                                  'Last Login',
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.w600,
-                                    color: Color(0xFF3671AA),
-                                  ),
-                                ),
-                                subtitle: monthly.lastLogin != null
-                                    ? Text(
-                                        '${monthly.lastLogin!.loginDate} at ${monthly.lastLogin!.loginTime}',
-                                        style: TextStyle(fontSize: 14),
-                                      )
-                                    : Text('No login recorded.'),
-                              ),
-                              ListTile(
-                                contentPadding: EdgeInsets.zero,
-                                leading: Container(
-                                  padding: EdgeInsets.all(8),
-                                  decoration: BoxDecoration(
-                                    color: Colors.red.withOpacity(0.1),
-                                    borderRadius: BorderRadius.circular(8),
-                                  ),
-                                  child: Icon(
-                                    Icons.logout,
-                                    color: Colors.red,
-                                    size: 20,
-                                  ),
-                                ),
-                                title: Text(
-                                  'Last Logout',
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.w600,
-                                    color: Color(0xFF3671AA),
-                                  ),
-                                ),
-                                subtitle: monthly.lastLogout != null
-                                    ? Text(
-                                        '${monthly.lastLogout!.logoutDate} at ${monthly.lastLogout!.logoutTime}',
-                                        style: TextStyle(fontSize: 14),
-                                      )
-                                    : Text('No logout recorded.'),
-                              ),
-                            ],
-                          ),
+          child: SafeArea(
+            child: Obx(() {
+              if (controller.isLoading.value) {
+                return Center(
+                    child: CircularProgressIndicator(color: Color(0xFF3671AA)));
+              }
+              final data = controller.attendanceData.value;
+              if (data == null) {
+                return Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        'No attendance data',
+                        style: TextStyle(
+                          color: Color(0xFF3671AA),
+                          fontSize: 20,
+                          fontFamily: 'NeoLatina',
+                          fontWeight: FontWeight.bold,
                         ),
-                      );
-                    } else {
-                      return SizedBox.shrink();
-                    }
-                  }),
-                  Padding(
-                    padding: EdgeInsets.only(top: 40),
-                    child: Text(
-                      'History',
-                      style: TextStyle(
-                        color: Color(0xFF3671AA),
-                        fontSize: 20,
-                        fontFamily: 'NeoLatina',
-                        fontWeight: FontWeight.bold,
+                      ),
+                      SizedBox(height: 10),
+                      ElevatedButton(
+                        onPressed: () {
+                          controller.fetchAttendance();
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Color.fromARGB(255, 70, 134, 193),
+                          foregroundColor: Colors.white,
+                        ),
+                        child: Text('Try Again'),
+                      ),
+                    ],
+                  ),
+                );
+              }
+
+              return SingleChildScrollView(
+                physics: AlwaysScrollableScrollPhysics(),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(30),
+                      child: Image(
+                        image: AssetImage('assets/images/att.jpg'),
                       ),
                     ),
-                  ),
-                  // ✅ تعديل الأقواس هنا فقط
-                  RefreshIndicator(
-                    onRefresh: () async {
-                      await controller.fetchAttendance();
-                    },
-                    child: ListView.builder(
+                    Obx(() {
+                      final monthly = controller.monthlyData.value;
+                      if (monthly != null) {
+                        return Card(
+                          margin: const EdgeInsets.symmetric(vertical: 16.0),
+                          elevation: 0,
+                          color: Colors.transparent,
+                          child: Padding(
+                            padding: const EdgeInsets.all(16.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'Attendance Summary',
+                                  style: TextStyle(
+                                    color: Color(0xFF3671AA),
+                                    fontSize: 20,
+                                    fontFamily: 'NeoLatina',
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                SizedBox(height: 4),
+                                Text(
+                                  monthly.month,
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    color: Colors.grey[600],
+                                  ),
+                                ),
+                                SizedBox(height: 16),
+                                ListTile(
+                                  contentPadding: EdgeInsets.zero,
+                                  leading: Container(
+                                    padding: EdgeInsets.all(8),
+                                    decoration: BoxDecoration(
+                                      color: Colors.blue.withOpacity(0.1),
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
+                                    child: Icon(
+                                      Icons.schedule,
+                                      color: Color(0xFF3671AA),
+                                      size: 20,
+                                    ),
+                                  ),
+                                  title: Text(
+                                    'Total Hours',
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.w600,
+                                      color: Color(0xFF3671AA),
+                                    ),
+                                  ),
+                                  trailing: Text(
+                                    '${monthly.totalHours}',
+                                    style: TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold,
+                                      color: Color(0xFF3671AA),
+                                    ),
+                                  ),
+                                ),
+                                ListTile(
+                                  contentPadding: EdgeInsets.zero,
+                                  leading: Container(
+                                    padding: EdgeInsets.all(8),
+                                    decoration: BoxDecoration(
+                                      color: Colors.green.withOpacity(0.1),
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
+                                    child: Icon(
+                                      Icons.login,
+                                      color: Colors.green,
+                                      size: 20,
+                                    ),
+                                  ),
+                                  title: Text(
+                                    'Last Login',
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.w600,
+                                      color: Color(0xFF3671AA),
+                                    ),
+                                  ),
+                                  subtitle: monthly.lastLogin != null
+                                      ? Text(
+                                          '${monthly.lastLogin!.loginDate} at ${monthly.lastLogin!.loginTime}',
+                                          style: TextStyle(fontSize: 14),
+                                        )
+                                      : Text('No login recorded.'),
+                                ),
+                                ListTile(
+                                  contentPadding: EdgeInsets.zero,
+                                  leading: Container(
+                                    padding: EdgeInsets.all(8),
+                                    decoration: BoxDecoration(
+                                      color: Colors.red.withOpacity(0.1),
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
+                                    child: Icon(
+                                      Icons.logout,
+                                      color: Colors.red,
+                                      size: 20,
+                                    ),
+                                  ),
+                                  title: Text(
+                                    'Last Logout',
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.w600,
+                                      color: Color(0xFF3671AA),
+                                    ),
+                                  ),
+                                  subtitle: monthly.lastLogout != null
+                                      ? Text(
+                                          '${monthly.lastLogout!.logoutDate} at ${monthly.lastLogout!.logoutTime}',
+                                          style: TextStyle(fontSize: 14),
+                                        )
+                                      : Text('No logout recorded.'),
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
+                      } else {
+                        return SizedBox.shrink();
+                      }
+                    }),
+                    Padding(
+                      padding: EdgeInsets.only(top: 40),
+                      child: Text(
+                        'History',
+                        style: TextStyle(
+                          color: Color(0xFF3671AA),
+                          fontSize: 20,
+                          fontFamily: 'NeoLatina',
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                    ListView.builder(
                       shrinkWrap: true,
                       physics: NeverScrollableScrollPhysics(),
                       itemCount: data.entryRecord.length,
@@ -454,12 +456,12 @@ class AttendanceView extends StatelessWidget {
                           ),
                         );
                       },
-                    ),
-                  ), // ✅ هون كانت المشكلة بالإغلاق
-                ],
-              ),
-            );
-          }),
+                    ), // ✅ هون كانت المشكلة بالإغلاق
+                  ],
+                ),
+              );
+            }),
+          ),
         ),
       ),
     );
