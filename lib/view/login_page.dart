@@ -146,7 +146,6 @@ class _LogInPageState extends State<LogInPage> {
                             emailController.text.trim(),
                             passwordController.text.trim(),
                           );
-
                           if (authResponse != null) {
                             Get.offAllNamed('/attendance');
                             Get.snackbar(

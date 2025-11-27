@@ -1,12 +1,12 @@
 import 'dart:developer';
 
 import 'package:dio/dio.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:example/helper/network_util.dart';
 import '../model/profile_model.dart';
 
 class ProfileService {
   final Dio _dio = Dio(
-    BaseOptions(baseUrl: 'http://89.116.236.10:8000/api'),
+    BaseOptions(baseUrl: '${$.URL}'),
   );
 
   Future<ProfileModel?> getProfile(String token) async {

@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:example/helper/network_util.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 enum LogoutStatus { success, alreadyLoggedOut, failure }
@@ -6,7 +7,7 @@ enum LogoutStatus { success, alreadyLoggedOut, failure }
 class LogoutOutFromClubService {
   static String? _token = "";
   static final Dio _dio = Dio(BaseOptions(
-    baseUrl: 'http://89.116.236.10:8000/api/',
+    baseUrl: '${$.URL}/',
     connectTimeout: Duration(seconds: 30),
     receiveTimeout: Duration(seconds: 30),
   ));

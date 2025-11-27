@@ -10,10 +10,15 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
+    final controller = Get.put(ProfileController());
+  @override
+  void initState() {
+    super.initState();
+    controller.fetchProfile();
+  }
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(ProfileController());
-    controller.fetchProfile();
+
 
     return Scaffold(
       backgroundColor: Colors.white,

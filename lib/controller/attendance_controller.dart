@@ -13,6 +13,7 @@ class AttendanceController extends GetxController {
   var isLoading = false.obs;
   var attendanceData = Rxn<AttendanceData>();
   var monthlyData = Rxn<MonthlyAttendanceModel>();
+  var isLogoutLoading = RxBool(false);
   // final RefreshController refreshController= RefreshController(initialRefresh: false);
 
   @override
@@ -46,13 +47,24 @@ class AttendanceController extends GetxController {
   }
 
   Future<void> logoutFromApp() async {
+    isLogoutLoading.value = true;
+    try {
+      
     final success = await LogoutFromAppService.LogoutFromApp();
     if (success) {
       Get.offAll(() => LogInPage());
+
     } else {
       print('Failed to logout from app.');
       Get.snackbar('Error', 'Failed to logout from app.');
     }
+    } catch (e) {
+      
+    }
+    finally{
+      isLogoutLoading.value = false;
+    }
+
   }
 
   Future<void> logoutFromClub() async {

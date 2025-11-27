@@ -143,25 +143,28 @@ class AttendanceView extends StatelessWidget {
                                   Navigator.of(context).pop();
                                 },
                               ),
-                              ElevatedButton(
-                                onPressed: () {
-                                  Navigator.of(context).pop();
-                                  controller.logoutFromApp();
-                                },
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: Color(0xFF3671AA),
-                                  foregroundColor: Colors.white,
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: 15, vertical: 8),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(8),
+                              Obx(() {
+                                return ElevatedButton(
+                                  onPressed: () {
+                                    controller.logoutFromApp();
+                                  },
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: Color(0xFF3671AA),
+                                    foregroundColor: Colors.white,
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: 15, vertical: 8),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
                                   ),
-                                ),
-                                child: Text(
-                                  'confirm',
-                                  style: TextStyle(fontSize: 15),
-                                ),
-                              ),
+                                  child: controller.isLogoutLoading.value
+                                      ? CircularProgressIndicator(color: Colors.white,)
+                                      : Text(
+                                          'confirm',
+                                          style: TextStyle(fontSize: 15),
+                                        ),
+                                );
+                              }),
                             ],
                           );
                         },

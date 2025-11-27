@@ -6,7 +6,7 @@ import 'package:example/alert.dart';
 
 class $ {
   static String? _token="";
-  static final String _URL = "http://89.116.236.10:8000/api";
+  static final String URL = "https://api-cards-robotic-club.tech-sauce.com/api";
 
   static Future<dynamic> get(String url) async {
     try {
@@ -92,6 +92,6 @@ class $ {
 
   static String resolveUrl(String url) {
     url = url[0] == '/' ? url.substring(1) : url;
-    return url.contains('https') ? url : (_URL + '/' + url);
+    return url.contains('https') ? url : (URL + '/' + url);
   }
 }

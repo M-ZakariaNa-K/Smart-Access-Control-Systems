@@ -8,7 +8,7 @@ class AttendanceRecordsService {
   static String? _token = "";
 
   static final Dio _dio = Dio(BaseOptions(
-    baseUrl: 'http://89.116.236.10:8000/api/',
+    baseUrl: '${$.URL}/',
   ));
   static Future<AttendanceData?> fetchAttendanceRecords() async {
     try {
