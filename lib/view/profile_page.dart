@@ -41,6 +41,7 @@ class _ProfilePageState extends State<ProfilePage> {
           icon: const Icon(Icons.arrow_back_ios, color: Color(0xFF3671AA)),
         ),
       ),
+      
       body: Obx(() {
         if (controller.isLoading.value) {
           return const Center(
@@ -81,6 +82,7 @@ class _ProfilePageState extends State<ProfilePage> {
               )
             : BoxDecoration(
                 shape: BoxShape.circle,
+                border: Border.all(color: const Color.fromARGB(255, 6, 181, 96), width: 5),
                 gradient: const SweepGradient(
                   colors: [
                     Color(0xFF00FF85),
@@ -95,13 +97,14 @@ class _ProfilePageState extends State<ProfilePage> {
               );
 
         return Container(
+          height: MediaQuery.of(context).size.height,
           width: double.infinity,
           decoration: BoxDecoration(
             image: DecorationImage(
-              image: const AssetImage("assets/images/pattern.png"),
+              image: const AssetImage("assets/images/patternNew.png"),
               fit: BoxFit.cover,
               colorFilter: ColorFilter.mode(
-                Colors.white.withOpacity(0.7),
+                Colors.white.withOpacity(0.96),
                 BlendMode.srcOver,
               ),
             ),

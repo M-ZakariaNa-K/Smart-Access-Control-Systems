@@ -59,13 +59,14 @@ class _LogInPageState extends State<LogInPage> {
     return Scaffold(
       body: SingleChildScrollView(
         child: Container(
+          height: MediaQuery.of(context).size.height,
           padding: EdgeInsets.symmetric(horizontal: 20, vertical: 80),
           decoration: BoxDecoration(
             image: DecorationImage(
-              image: AssetImage("assets/images/pattern.png"),
+              image: AssetImage("assets/images/patternNew.png"),
               fit: BoxFit.cover,
               colorFilter: ColorFilter.mode(
-                Colors.white.withOpacity(0.5),
+                Colors.white.withOpacity(0.96),
                 BlendMode.srcOver,
               ),
             ),
@@ -101,7 +102,7 @@ class _LogInPageState extends State<LogInPage> {
                   child: CustomTextField(
                     controller: emailController,
                     textInputType: TextInputType.emailAddress,
-                    hintText: 'E mail',
+                    hintText: 'Email',
                     focusNode: emailFocus,
                     validator: (value) {
                       if (value == null || value.isEmpty) {

@@ -20,11 +20,15 @@ class AttendanceView extends StatelessWidget {
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Image(
-              image: AssetImage('assets/images/LogoRobotic.png'),
-              height: 60,
-              width: 60,
+            Padding(
+              padding:const EdgeInsets.only(left: 8.0) ,
+               child: Image.asset('assets/images/Logo.png',
+              
+              height: 40,
+              width: 40,
             ),
+            ),
+           
             Text('Attendance',
                 style: TextStyle(
                     color: Color(0xFF3671AA),
@@ -226,13 +230,14 @@ class AttendanceView extends StatelessWidget {
         child: Container(
           width: double.infinity,
           height: double.infinity,
-          padding: EdgeInsets.all(15),
+          padding: EdgeInsets.only(left: 15, right: 15, top: 4),
           decoration: BoxDecoration(
             image: DecorationImage(
-              image: AssetImage('assets/images/Background.jpg'),
+              image: AssetImage('assets/images/patternNew.png'),
               fit: BoxFit.cover,
               colorFilter: ColorFilter.mode(
-                  Colors.white.withOpacity(0.7), BlendMode.srcOver),
+                  Colors.white.withOpacity(0.96),
+                   BlendMode.srcOver),
             ),
           ),
           child: SafeArea(
