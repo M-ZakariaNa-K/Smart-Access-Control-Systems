@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:dio/dio.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -19,22 +21,29 @@ class LogoutFromAppService {
       _token = prefs.getString('token');
 
       print('Loggin out from the app');
+      log("zak2 $_token");
       final response = await _dio.post(
         'logoutFromApp',
         options: Options(
-          headers: {
-            'Content-Type': 'application/json; charset=utf-8',
-            'Accept': 'application/json',
-            if (_token != null) 'Authorization': 'Bearer $_token',
-          },
-        ),
+            headers: {
+              'Content-Type': 'application/json; charset=utf-8',
+              'Accept': 'application/json',
+              if (_token != null) 'Authorization': 'Bearer $_token',
+            },
+            validateStatus: (v) {
+              return v != null && v >= 200 && v <= 420;
+            }),
       );
 
+      log("zak1 $_token");
       if (response.statusCode == 200) {
         final prefs = await SharedPreferences.getInstance();
         await prefs.remove('token'); // حذف التوكن
         Get.offAllNamed('/login'); // رجوع لصفحة تسجيل الدخول
         print('Logout successful');
+        return true;
+      } else if (response.statusCode == 401 && _token != null) {
+        await prefs.remove('token');
         return true;
       } else {
         print(' failed to logout from app: ${response.data?['message']}');

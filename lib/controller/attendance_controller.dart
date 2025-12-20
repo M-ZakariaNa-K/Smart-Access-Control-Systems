@@ -81,6 +81,8 @@ class AttendanceController extends GetxController {
       case LogoutStatus.failure:
         print('Failed to logout from club.');
         Get.snackbar('Error', 'Failed to log out from the club.');
+      case LogoutStatus.sessionExpired:
+                      Get.snackbar('Hi', 'Your session has been expired');
         break;
     }
   }

@@ -1,3 +1,4 @@
+import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../models/attendance_records_model.dart';
@@ -23,6 +24,9 @@ class AttendanceRecordsService {
               'Accept': 'application/json',
               if (_token != null) 'Authorization': 'Bearer $_token',
             },
+                  validateStatus: (v) {
+              return v != null && v >= 200 && v <= 420;
+            }
           ));
 
       print("response received with status:${response.statusCode}");
@@ -30,7 +34,15 @@ class AttendanceRecordsService {
       if (response.statusCode == 200) {
         final data = response.data['data'];
         return AttendanceData.fromJson(data);
-      } else {
+      }
+      else if (response.statusCode == 401 && _token != null) {
+        await prefs.remove('token');
+        
+        Get.offAllNamed('/login'); 
+                        Get.snackbar('Hi', 'Your session has been expired');
+        return null;
+      } 
+       else {
         print(' Server error: ${response.data['message']}');
         return null;
       }

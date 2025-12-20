@@ -21,14 +21,13 @@ class AttendanceView extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Padding(
-              padding:const EdgeInsets.only(left: 8.0) ,
-               child: Image.asset('assets/images/Logo.png',
-              
-              height: 40,
-              width: 40,
+              padding: const EdgeInsets.only(left: 8.0),
+              child: Image.asset(
+                'assets/images/Logo.png',
+                height: 40,
+                width: 40,
+              ),
             ),
-            ),
-           
             Text('Attendance',
                 style: TextStyle(
                     color: Color(0xFF3671AA),
@@ -162,7 +161,9 @@ class AttendanceView extends StatelessWidget {
                                     ),
                                   ),
                                   child: controller.isLogoutLoading.value
-                                      ? CircularProgressIndicator(color: Colors.white,)
+                                      ? CircularProgressIndicator(
+                                          color: Colors.white,
+                                        )
                                       : Text(
                                           'confirm',
                                           style: TextStyle(fontSize: 15),
@@ -236,8 +237,7 @@ class AttendanceView extends StatelessWidget {
               image: AssetImage('assets/images/patternNew.png'),
               fit: BoxFit.cover,
               colorFilter: ColorFilter.mode(
-                  Colors.white.withOpacity(0.96),
-                   BlendMode.srcOver),
+                  Colors.white.withOpacity(0.96), BlendMode.srcOver),
             ),
           ),
           child: SafeArea(

@@ -1,8 +1,9 @@
 import 'package:dio/dio.dart';
 import 'package:example/helper/network_util.dart';
+import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-enum LogoutStatus { success, alreadyLoggedOut, failure }
+enum LogoutStatus { success, alreadyLoggedOut, failure ,sessionExpired}
 
 class LogoutOutFromClubService {
   static String? _token = "";
@@ -24,7 +25,9 @@ class LogoutOutFromClubService {
             'Accept': 'application/json',
             if (_token != null) 'Authorization': 'Bearer $_token',
           },
-          validateStatus: (status) => true,
+              validateStatus: (v) {
+              return v != null && v >= 200 && v <= 420;
+            }
         ),
       );
       print(
@@ -32,7 +35,14 @@ class LogoutOutFromClubService {
       print('Logout from club response body: ${response.data}');
       if (response.statusCode == 200) {
         return LogoutStatus.success;
-      } else if (response.statusCode == 404) {
+      } 
+       else if (response.statusCode == 401 && _token != null) {
+        await prefs.remove('token');
+        Get.offAllNamed('/login'); 
+
+        return LogoutStatus.sessionExpired;
+      } 
+      else if (response.statusCode == 404) {
         return LogoutStatus.alreadyLoggedOut;
       } else {
         return LogoutStatus.failure;

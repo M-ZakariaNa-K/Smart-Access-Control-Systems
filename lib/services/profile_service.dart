@@ -2,6 +2,8 @@ import 'dart:developer';
 
 import 'package:dio/dio.dart';
 import 'package:example/helper/network_util.dart';
+import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../model/profile_model.dart';
 
 class ProfileService {
@@ -15,13 +17,21 @@ class ProfileService {
       final response = await _dio.get(
         '/profile',
         options: Options(
-          headers: {'Authorization': 'Bearer $token'},
-        ),
+            headers: {'Authorization': 'Bearer $token'},
+            validateStatus: (v) {
+              return v != null && v >= 200 && v <= 420;
+            }),
       );
       log("zak $response");
       if (response.statusCode == 200 && response.data['data'] != null) {
         final data = response.data['data'] as Map<String, dynamic>;
         return ProfileModel.fromMap(data);
+      } else if (response.statusCode == 401 && (token != null || token != "")) {
+        final prefs = await SharedPreferences.getInstance();
+        await prefs.remove('token');
+        Get.offAllNamed('/login');
+        Get.snackbar('Hi', 'Your session has been expired');
+        return null;
       } else {
         print('Unexpected response: ${response.statusCode}');
       }

@@ -4,7 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../model/auth_response.dart';
 
 class ApiService {
-  final Dio _dio = Dio(BaseOptions(baseUrl:$.URL));
+  final Dio _dio = Dio(BaseOptions(baseUrl: $.URL));
 
   Future<AuthResponse?> login(String email, String password) async {
     try {

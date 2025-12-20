@@ -1,4 +1,5 @@
 import 'package:example/helper/network_util.dart';
+import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../models/monthly_attendance_model.dart';
@@ -25,6 +26,9 @@ class MonthlyAttendanceService {
             'Accept': 'application/json',
             if (_token != null) 'Authorization': 'Bearer $_token',
           },
+              validateStatus: (v) {
+              return v != null && v >= 200 && v <= 420;
+            }
         ),
       );
       print(
@@ -34,7 +38,14 @@ class MonthlyAttendanceService {
       if (response.statusCode == 200) {
         final data = response.data['data'];
         return MonthlyAttendanceModel.fromJson(data);
-      } else {
+      } 
+       else if (response.statusCode == 401 && _token != null) {
+        await prefs.remove('token');
+        Get.offAllNamed('/login'); 
+                Get.snackbar('Hi', 'Your session has been expired');
+        return null;
+      } 
+      else {
         print('Failed to fetch monthly total: ${response.data['message']}');
         return null;
       }
